@@ -21,7 +21,7 @@ jobs:
             # 更新 apt 包索引
             apt-get update && \
             # 安装 wget、unzip 和 python3
-            apt-get install -y wget unzip && \
+            apt-get install -y wget unzip python3 && \
             # 下载目标 zip 文件
             wget https://github.com/ONLYOFFICE/build_tools/archive/refs/tags/v8.2.0.143.zip && \
             # 解压文件
