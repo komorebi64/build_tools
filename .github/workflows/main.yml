@@ -1,0 +1,31 @@
+name: Run ONLYOFFICE Build Tools
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Docker with Ubuntu 16.04
+        run: |
+          # 运行 Ubuntu 16.04 容器
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:16.04 /bin/bash -c "
+            # 更新 apt 包索引
+            apt-get update && \
+            # 安装 wget、unzip 和 python3
+            apt-get install -y wget unzip && \
+            # 下载目标 zip 文件
+            wget https://github.com/ONLYOFFICE/build_tools/archive/refs/tags/v8.2.0.143.zip && \
+            # 解压文件
+            unzip v8.2.0.143.zip && \
+            # 进入指定目录
+            cd build_tools-8.2.0.143/tools/linux && \
+            # 执行 Python 脚本
+            python3 ./automate.py server
+          "
