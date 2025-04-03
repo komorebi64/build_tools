@@ -41,7 +41,9 @@ def install_deps():
               "libxss1",
               "libncurses5",
               "libncurses6",
-              "curl"]
+              "curl",
+              "libxkbcommon-dev",
+              "libxkbcommon-x11-dev"]
 
   for package in packages:
     base.cmd("sudo", ["apt-get", "install", "-y", package], True)

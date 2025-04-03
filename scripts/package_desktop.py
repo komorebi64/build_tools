@@ -63,6 +63,7 @@ def make_windows():
   make_zip()
   make_inno()
   make_advinst()
+  make_online()
 
   utils.set_cwd(common.workspace_dir)
   return
@@ -174,6 +175,19 @@ def make_advinst():
     utils.log_h2("desktop advinst deploy")
     ret = s3_upload([advinst_file], "desktop/win/advinst/")
     utils.set_summary("desktop advinst deploy", ret)
+  return
+
+def make_online():
+  if not common.platform in ["windows_x64", "windows_x86"]:
+    return
+  online_file = "%s-%s-%s.exe" % ("OnlineInstaller", package_version, suffix)
+  ret = utils.is_file(online_file)
+  utils.set_summary("desktop online installer build", ret)
+
+  if common.deploy and ret:
+    utils.log_h2("desktop online installer deploy")
+    ret = s3_upload([online_file], "desktop/win/online/")
+    utils.set_summary("desktop online installer deploy", ret)
   return
 
 #
@@ -288,9 +302,11 @@ def make_sparkle_updates():
       + " | while read f; do cp -fv \"$f\" " + updates_dir + "/; done",
     verbose=True)
 
-  for file in utils.glob_path(changes_dir + "/" + common.version + "/*.html"):
-    filename = utils.get_basename(file).replace("changes", zip_filename)
-    utils.copy_file(file, updates_dir + "/" + filename)
+  for ext in [".html", ".ru.html"]:
+    changes_src = changes_dir + "/" + common.version + "/changes" + ext
+    changes_dst = updates_dir + "/" + zip_filename + ext
+    if not utils.copy_file(changes_src, changes_dst):
+      utils.write_file(changes_dst, "<!DOCTYPE html>placeholder")
 
   sparkle_base_url = "%s/%s/updates/" % (branding.sparkle_base_url, suffix)
   ret = utils.sh(

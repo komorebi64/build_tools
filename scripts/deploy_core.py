@@ -30,7 +30,6 @@ def make():
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "kernel_network")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "graphics")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "doctrenderer")
-    base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "HtmlRenderer")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "DjVuFile")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "XpsFile")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "PdfFile")
@@ -38,6 +37,8 @@ def make():
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "UnicodeConverter")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "Fb2File")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "EpubFile")
+    base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "IWorkFile")
+    base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "HWPFile")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "DocxRenderer")
     base.copy_lib(core_build_dir + "/lib/" + platform_postfix, archive_dir, "hunspell")
     base.copy_file(git_dir + "/sdkjs/pdf/src/engine/cmap.bin", archive_dir + "/cmap.bin")
@@ -66,7 +67,7 @@ def make():
 
     # js cache
     base.generate_doctrenderer_config(archive_dir + "/DoctRenderer.config", "./", "builder", "", "./dictionaries")
-    base.create_x2t_js_cache(archive_dir, "core")
+    base.create_x2t_js_cache(archive_dir, "core", platform)
     base.delete_file(archive_dir + "/DoctRenderer.config")
 
     # dictionaries
